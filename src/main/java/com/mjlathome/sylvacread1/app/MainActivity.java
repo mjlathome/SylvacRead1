@@ -383,7 +383,7 @@ public class MainActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Log.i("onLeScan", device.toString());
+                            Log.i(TAG, "onLeScan: " + device.toString());
                             if(device.getName().equals(DEVICE_NAME_BONDED)) {
                                 connectToDevice(device);
                             }
