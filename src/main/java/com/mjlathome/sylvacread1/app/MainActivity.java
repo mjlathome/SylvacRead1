@@ -1,7 +1,7 @@
 package com.mjlathome.sylvacread1.app;
 
+// import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -12,13 +12,10 @@ import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
@@ -29,11 +26,12 @@ import android.widget.Toast;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
+import java.util.UUID;
 
+// @TargetApi(21)
 public class MainActivity extends Activity {
 
     // private static final int REQUEST_ENABLE_BT = 1;
@@ -51,7 +49,7 @@ public class MainActivity extends Activity {
     private Handler mHandler;
 
     // Stops scanning after 10 seconds.
-    private static final long SCAN_PERIOD = 10000;
+    private static final long SCAN_PERIOD = 20000;
 
     private SparseArray<BluetoothDevice> mDevices;
 
@@ -63,7 +61,8 @@ public class MainActivity extends Activity {
     private String mLastWrite = "";
     private boolean mCanWrite = true;
 
-    private ProgressDialog mProgress;
+    // TODO remove later as not required
+//    private ProgressDialog mProgress;
     private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics;
 
     private static final String DEVICE_NAME_BONDED   = "SY";
@@ -78,41 +77,43 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 //        setProgressBarIndeterminate(true);
 
-        mReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String action = intent.getAction();
-                if (BluetoothDevice.ACTION_UUID.equals(action)) {
-                    Log.d(TAG, "ACTION_UUID received");
-                    Log.d(TAG, "ACTION_UUID Has " + BluetoothDevice.EXTRA_UUID + ": " + intent.hasExtra(BluetoothDevice.EXTRA_UUID));
-                    if (intent.hasExtra(BluetoothDevice.EXTRA_DEVICE)) {
-                        BluetoothDevice btd = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                        Log.d(TAG, "ACTION_UUID btd name: " + btd.getName());
-                    }
-                    if (intent.hasExtra(BluetoothDevice.EXTRA_UUID)) {
-                        Parcelable[] uuidExtra = intent.getParcelableArrayExtra(BluetoothDevice.EXTRA_UUID);
-                        Log.d(TAG, "ACTION_UUID UUIDs: " + uuidExtra);
-                    }
-                    /*
-                    BluetoothDevice btd = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+        // TODO remove later as not required
+//        mReceiver = new BroadcastReceiver() {
+//            @Override
+//            public void onReceive(Context context, Intent intent) {
+//                String action = intent.getAction();
+//                if (BluetoothDevice.ACTION_UUID.equals(action)) {
+//                    Log.d(TAG, "ACTION_UUID received");
+//                    Log.d(TAG, "ACTION_UUID Has " + BluetoothDevice.EXTRA_UUID + ": " + intent.hasExtra(BluetoothDevice.EXTRA_UUID));
+//                    if (intent.hasExtra(BluetoothDevice.EXTRA_DEVICE)) {
+//                        BluetoothDevice btd = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+//                        Log.d(TAG, "ACTION_UUID btd name: " + btd.getName());
+//                    }
+//                    if (intent.hasExtra(BluetoothDevice.EXTRA_UUID)) {
+//                        Parcelable[] uuidExtra = intent.getParcelableArrayExtra(BluetoothDevice.EXTRA_UUID);
+//                        Log.d(TAG, "ACTION_UUID UUIDs: " + uuidExtra);
+//                    }
+//                    /*
+//                    BluetoothDevice btd = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+//
+//                    StringBuilder sb = new StringBuilder();
+//                    List<String> uuids = new ArrayList<String>(uuidExtra.length);
+//                    if(uuidExtra != null) {
+//                        for (int i = 0; i < uuidExtra.length; i++) {
+//                            sb.append(uuidExtra[i].toString()).append(',');
+//                            uuids.add(uuidExtra[i].toString());
+//                        }
+//                    }
+//                    Log.d(TAG, "ACTION_UUID received for " + btd.getName() + " uuids: " + sb.toString());
+//                    */
+//                }
+//            }
+//        };
 
-                    StringBuilder sb = new StringBuilder();
-                    List<String> uuids = new ArrayList<String>(uuidExtra.length);
-                    if(uuidExtra != null) {
-                        for (int i = 0; i < uuidExtra.length; i++) {
-                            sb.append(uuidExtra[i].toString()).append(',');
-                            uuids.add(uuidExtra[i].toString());
-                        }
-                    }
-                    Log.d(TAG, "ACTION_UUID received for " + btd.getName() + " uuids: " + sb.toString());
-                    */
-                }
-            }
-        };
-
-        // Register the BroadcastReceiver
-        IntentFilter filter1 = new IntentFilter(BluetoothDevice.ACTION_UUID);
-        registerReceiver(mReceiver,filter1);
+        // TODO remove later as not required
+//        // Register the BroadcastReceiver
+//        IntentFilter filter1 = new IntentFilter(BluetoothDevice.ACTION_UUID);
+//        registerReceiver(mReceiver,filter1);
 
         // extract Bluetooth adapter under Android 4.3+
         BluetoothManager manager = (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
@@ -120,13 +121,14 @@ public class MainActivity extends Activity {
 
         mDevices = new SparseArray<BluetoothDevice>();
 
-        /*
-         * A progress dialog will be needed while the connection process is
-         * taking place
-         */
-        mProgress = new ProgressDialog(this);
-        mProgress.setIndeterminate(true);
-        mProgress.setCancelable(false);
+        // TODO remove later as not required
+//        /*
+//         * A progress dialog will be needed while the connection process is
+//         * taking place
+//         */
+//        mProgress = new ProgressDialog(this);
+//        mProgress.setIndeterminate(true);
+//        mProgress.setCancelable(false);
 
 
         mHandler = new Handler();
@@ -163,15 +165,22 @@ public class MainActivity extends Activity {
     protected void onPause() {
         super.onPause();
 
-        //Make sure dialog is hidden
-        //mProgress.dismiss();
-        //Cancel any scans in progress
-        //mHandler.removeCallbacks(mStopRunnable);
-        //mHandler.removeCallbacks(mStartRunnable);
-        //mBluetoothAdapter.stopLeScan(this);
+        if (mBluetoothAdapter != null && mBluetoothAdapter.isEnabled()) {
+            scanLeDevice(false);
+        }
     }
 
+//    @Override
+//    protected void onDestroy() {
+//        mConnectedGatt = disconnectGatt(mConnectedGatt);
+//        super.onDestroy();
+//    }
 
+    @Override
+    protected void onStop() {
+        mConnectedGatt = disconnectGatt(mConnectedGatt);
+        super.onStop();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -229,6 +238,7 @@ public class MainActivity extends Activity {
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    Log.d(TAG, "scanLeDevice - stopLeScan - postDelayed");
                     mScanning = false;
                     mBluetoothAdapter.stopLeScan(mLeScanCallback);
                 }
@@ -242,6 +252,7 @@ public class MainActivity extends Activity {
             // does not work correctly
             // mBluetoothAdapter.startLeScan(uuidService, mLeScanCallback);
         } else {
+            Log.d(TAG, "scanLeDevice - stopLeScan - immediate");
             mScanning = false;
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
         }
@@ -252,19 +263,38 @@ public class MainActivity extends Activity {
      * one characteristic be read or written at a time until all of our sensors
      * are enabled and we are registered to get notifications.
      */
-    private BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
+    private final BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
         @Override
-        public void onConnectionStateChange(BluetoothGatt gatt, int status,
-                                            int newState) {
-            if (newState == BluetoothProfile.STATE_CONNECTED) {
-                Log.i(TAG, "Connected to GATT server.");
-                Log.i(TAG, "Attempting to start service discovery:" +
-                        mConnectedGatt.discoverServices());
+        public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
 
-            } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-                Log.i(TAG, "Disconnected from GATT server.");
+            Log.d(TAG, "onConnectionStateChange - newState = " + newState);
+
+            switch(newState) {
+                case BluetoothProfile.STATE_CONNECTED:
+                    Log.i(TAG, "gattCallback - STATE_CONNECTED");
+                    gatt.discoverServices();
+                    break;
+                case BluetoothProfile.STATE_DISCONNECTED:
+                    Log.e(TAG, "gattCallback - STATE_DISCONNECTED");
+                    mConnectedGatt = disconnectGatt(gatt);
+                    break;
+                default:
+                    Log.e(TAG, "gattCallback - STATE_OTHER");
             }
+
+            // TODO remove this - old code - look at the usage of connectedGatt not gatt
+            // TODO no ops
+//            if (newState == BluetoothProfile.STATE_CONNECTED) {
+//                Log.i(TAG, "Connected to GATT server.");
+//                Log.i(TAG, "Attempting to start service discovery:" +
+//                        mConnectedGatt.discoverServices());
+//
+//            } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
+//                Log.i(TAG, "Disconnected from GATT server.");
+//            }
         }
+
+
 
         @Override
         // New services discovered
@@ -272,7 +302,7 @@ public class MainActivity extends Activity {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 Log.i(TAG, "onServicesDiscovered GATT_SUCCESS: " + status);
                 Log.d(TAG, "onServicesDiscovered Services = " + gatt.getServices());
-                displayGattServices(mConnectedGatt.getServices());
+                displayGattServices(gatt.getServices());
             } else {
                 Log.w(TAG, "onServicesDiscovered received: " + status);
             }
@@ -354,22 +384,37 @@ public class MainActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Log.d(TAG, "fetch = " + device.fetchUuidsWithSdp());
-                            Log.d(TAG, "UUID = " + device.getUuids());
-                            Log.d(TAG, "Name = " + device.getName());
-                            Log.d(TAG, "Type = " + device.getType());
-                            Log.d(TAG, "BT Class = " + device.getBluetoothClass());
-                            Log.d(TAG, "Address = " + device.getAddress());
-                            Log.d(TAG, "String = " + device.toString());
-
-                            List<UUID> uuids = parseUUIDs(scanRecord);
-                            Log.d(TAG, "UUIDs parsed = " + uuids.toString());
+                            Log.i("onLeScan", device.toString());
                             if(device.getName().equals(DEVICE_NAME_BONDED)) {
-                                Log.d(TAG, "mLeScanCallback: stopLeScan");
-                                mBluetoothAdapter.stopLeScan(mLeScanCallback);
-                                Log.d(TAG, "mLeScanCallback: connectGatt");
-                                mConnectedGatt = device.connectGatt(MainActivity.this, true /* was: false */, mGattCallback);
+                                connectToDevice(device);
                             }
+
+                            // TODO old code
+//                            Log.d(TAG, "fetch = " + device.fetchUuidsWithSdp());
+//                            Log.d(TAG, "UUID = " + device.getUuids());
+//                            Log.d(TAG, "Name = " + device.getName());
+//                            Log.d(TAG, "Type = " + device.getType());
+//                            Log.d(TAG, "BT Class = " + device.getBluetoothClass());
+//                            Log.d(TAG, "Address = " + device.getAddress());
+//                            Log.d(TAG, "String = " + device.toString());
+//
+//                            List<UUID> uuids = parseUUIDs(scanRecord);
+//                            Log.d(TAG, "UUIDs parsed = " + uuids.toString());
+//                            if(device.getName().equals(DEVICE_NAME_BONDED)) {
+//                                connectToDevice(device);
+//                                // TODO remove later as old code which does not work
+////                                Log.d(TAG, "mLeScanCallback: stopLeScan");
+////                                mBluetoothAdapter.stopLeScan(mLeScanCallback);
+////                                runOnUiThread(new Runnable() {
+////                                    @Override
+////                                    public void run() {
+////                                        Log.d(TAG, "mLeScanCallback: connectGatt");
+////                                        mConnectedGatt =
+////                                                device.connectGatt(MainActivity.this, false, mGattCallback);
+////                                        Log.d(TAG, "ConnectedGatt - Name = " + mConnectedGatt.getDevice().getName());
+////                                    }
+////                                });
+//                            }
 
                             // mLeDeviceListAdapter.addDevice(device);
                             // mLeDeviceListAdapter.notifyDataSetChanged();
@@ -377,6 +422,27 @@ public class MainActivity extends Activity {
                     });
                 }
             };
+
+    // connect to the gatt for the ble device provided
+    public void connectToDevice(BluetoothDevice device) {
+        if (mConnectedGatt == null) {
+            Log.d(TAG, "connectToDevice: " + device.getAddress());
+            mConnectedGatt = device.connectGatt(this, false, mGattCallback);
+            scanLeDevice(false);// will stop after first device detection
+        }
+    }
+
+    // disconnect from gatt
+    public BluetoothGatt disconnectGatt(BluetoothGatt gatt) {
+        if (gatt != null) {
+            Log.d(TAG, "gattCallback - before close mConnectedGatt");
+            gatt.close();
+            gatt = null;
+            Log.d(TAG, "gattCallback - after close mConnectedGatt");
+        }
+
+        return gatt;
+    }
 
     // parseUUIDs - extract UUIDs from the content of the advertisement record offered by the remote device
     // called from BLE callback method.
@@ -452,6 +518,7 @@ public class MainActivity extends Activity {
 
             // skip if not Sylvac Metrology service
             if (!service.getUuid().equals(UUID.fromString(SylvacGattAttributes.SYLVAC_METROLOGY_SERVICE))) {
+                Log.d(TAG, "Skip service: " + service.getUuid());
                 continue;
             }
 
