@@ -283,7 +283,6 @@ public class MainActivity extends Activity {
             }
 
             // TODO remove this - old code - look at the usage of connectedGatt not gatt
-            // TODO no ops
 //            if (newState == BluetoothProfile.STATE_CONNECTED) {
 //                Log.i(TAG, "Connected to GATT server.");
 //                Log.i(TAG, "Attempting to start service discovery:" +
